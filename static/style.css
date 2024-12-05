@@ -1,0 +1,34 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+input {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+select {
+    margin-bottom: 8px;
+}
+
+img {
+    width: 200px;
+    margin: 0px;
+
+}
+
+li {
+    list-style: none;
+    margin-bottom: 15px;;
+}
+
+.hidden {
+    display: none;
+}
+
+#k {
+    width: 50px;
+}

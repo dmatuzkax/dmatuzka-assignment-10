@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Search Engine</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <h1>Image Search</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        <label for="image">Image query:</label>
+        <input type="file" id="image" name="image" accept="image/*"><br>
+
+        <label for="text">Text query:</label>
+        <input type="text" id="text" name="text"><br>
+
+        <label for="weight">Hybrid query weight:</label>
+        <input type="number" step="0.01" id="weight" name="weight" min="0" max="1"><br>
+
+        <label for="type">Select query type:</label>
+        <select id="type" name="type" required>
+            <option value="text">Text query</option>
+            <option value="image">Image query</option>
+            <option value="hybrid">Hybrid query</option>
+        </select><br>
+
+        <div id="image-options" class="hidden">
+            <label for="image-type">Select embeddings:</label>
+            <select id="image-type" name="image-type">
+                <option value="CLIP">CLIP</option>
+                <option value="PCA">PCA</option>
+            </select><br>
+        </div>
+
+        <div class="hidden" id="k-select">
+            <label for="k">Number of components:</label>
+            <input type="number" step="1" id="k" name="k" min="1"><br>
+        </div>
+        
+        <button type="submit">Search</button>
+    </form>
+
+    {% if top_images %}
+        <h2>Top Search Results</h2>
+        <ul>
+            {% for image_path, similarity in top_images %}
+                <li>
+                    <img src="{{ image_path }}" alt="Similar Image">
+                    <p>Similarity: {{ similarity | round(3) }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+        
+    {% endif %}
+
+    <script>
+        const queryTypeDropdown = document.getElementById('type');
+        const imageQueryDropdown = document.getElementById('image-options');
+        const imageTypeDropdown = document.getElementById('image-type');
+        const componentSelect = document.getElementById('k-select');
+
+        queryTypeDropdown.addEventListener('change', () => {
+            if (queryTypeDropdown.value === 'image') {
+                imageQueryDropdown.classList.remove('hidden');
+            } else {
+                imageQueryDropdown.classList.add('hidden');
+                componentSelect.classList.add('hidden');  
+            }
+        });
+
+        imageTypeDropdown.addEventListener('change', () => {
+            if (imageTypeDropdown.value === 'PCA') {
+                componentSelect.classList.remove('hidden');
+            } else {
+                componentSelect.classList.add('hidden'); 
+            }
+        });
+    </script>
+
+</body>
+</html>
